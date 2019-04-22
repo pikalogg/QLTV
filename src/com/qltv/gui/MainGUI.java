@@ -10,8 +10,7 @@ import java.awt.event.MouseListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.JLabel; 
 
 public class MainGUI extends JFrame{
 	private static final long serialVersionUID = 1L;
@@ -30,6 +29,17 @@ public class MainGUI extends JFrame{
 		panelSach = new PanelQlSach();
 		panelTimkiem = new PanelTimkiem();
 		panelThongke = new PanelThongke();
+		getContentPane().add(panelDocgia);
+		getContentPane().add(panelMuontra);
+		getContentPane().add(panelSach);
+		getContentPane().add(panelTimkiem);
+		getContentPane().add(panelThongke);
+
+		panelThongke.setBounds(0, 130, 900, 310);
+		panelTimkiem.setBounds(0, 130, 900, 310);
+		panelSach.setBounds(0, 130, 900, 310);
+		panelMuontra.setBounds(0, 130, 900, 310);
+		panelDocgia.setBounds(0, 130, 900, 315);
 		
 		//- lựa chức năng- //
 		jbQldg = new JButton();
@@ -168,60 +178,44 @@ public class MainGUI extends JFrame{
 			public void mouseClicked(MouseEvent e) {}
 		});
 		
+		selectPanelQldg();
 		//-bgr-//
 		jlbgr = new JLabel(new ImageIcon("rec\\img\\main\\mainbgr.png"));
 		jlbgr.setBounds(0, 40, 900, 500);
 		getContentPane().add(jlbgr);
 		//
-
-		selectPanelQldg();
 	}
 	public void selectPanelQldg() {
 		jlTitle.setText("Quản lý độc giả");
 		removeAllPanel();
-		getContentPane().add(panelDocgia);
-		getContentPane().add(jlbgr);
-		((JPanel)getContentPane()).updateUI();
-		panelDocgia.setBounds(0, 130, 900, 315);
+		panelDocgia.setVisible(true);
 	}
 	public void selectPanelQmt() {
 		jlTitle.setText("Quản lý mượn, trả sách");	
 		removeAllPanel();
-		getContentPane().add(panelMuontra);
-		getContentPane().add(jlbgr);
-		((JPanel)getContentPane()).updateUI();
-		panelMuontra.setBounds(0, 130, 900, 310);
+		panelMuontra.setVisible(true);
 	}
 	public void selectPanelQlsach() {
 		jlTitle.setText("Quản lý kho sách");
 		removeAllPanel();
-		getContentPane().add(panelSach);
-		getContentPane().add(jlbgr);
-		((JPanel)getContentPane()).updateUI();
-		panelSach.setBounds(0, 130, 900, 310);
+		panelSach.setVisible(true);
 	}
 	public void selectPanelSea() {
 		jlTitle.setText("Tìm kiếm sách");
 		removeAllPanel();
-		getContentPane().add(panelTimkiem);
-		getContentPane().add(jlbgr);
-		((JPanel)getContentPane()).updateUI();
-		panelTimkiem.setBounds(0, 130, 900, 310);
+		panelTimkiem.setVisible(true);
 	}
 	public void selectPanelThongke() {
 		jlTitle.setText("Thống kê, báo cáo");
 		removeAllPanel();
-		getContentPane().add(panelThongke);
-		getContentPane().add(jlbgr);
-		((JPanel)getContentPane()).updateUI();
-		panelThongke.setBounds(0, 130, 900, 310);
+		panelThongke.setVisible(true);
 	}
 	private void removeAllPanel() {
-		getContentPane().remove(panelDocgia);
-		getContentPane().remove(panelThongke);
-		getContentPane().remove(panelSach);
-		getContentPane().remove(panelTimkiem);
-		getContentPane().remove(panelMuontra);
+		panelDocgia.setVisible(false);
+		panelMuontra.setVisible(false);
+		panelSach.setVisible(false);
+		panelThongke.setVisible(false);
+		panelTimkiem.setVisible(false);
 	}
 	private void setFone(JLabel jl) {
 		jl.setBorder(null);
