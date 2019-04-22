@@ -7,7 +7,10 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 public class PanelTimkiem extends JPanel{
 	private static final long serialVersionUID = 1L;
@@ -62,6 +65,27 @@ public class PanelTimkiem extends JPanel{
 		jtTacgia.setBounds(530, 10, 200, 30);
 		jtTheloai.setBounds(220, 60, 200, 30);
 		jtNXB.setBounds(530, 60, 200, 30);
+		
+		jstable= new JScrollPane();
+		table = new JTable();
+		jpanel.add(jstable);
+		jstable.setViewportView(table);
+		table.setModel(new DefaultTableModel(
+            new Object [][] {
+            	{null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4","Title 5", "Title 6", "Title 7", "Title 8"
+            })
+			{
+			private static final long serialVersionUID = 1L;
+			public boolean isCellEditable(int row, int column){return false;}}
+		);
+		jstable.setBounds(5, 5, 740, 140);
 	}
 	private void setFone(JLabel jl) {
 		jl.setBorder(null);
@@ -73,4 +97,7 @@ public class PanelTimkiem extends JPanel{
 	JButton jbTk,jbHuy;
 	JLabel jlTensach,jlTacgia,jlTheloai,jlNXB;
 	JTextField jtTensach,jtTacgia,jtTheloai,jtNXB;
+	
+	JTable table;
+	JScrollPane jstable;
 }
