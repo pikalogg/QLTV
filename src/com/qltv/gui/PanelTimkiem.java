@@ -2,6 +2,8 @@ package com.qltv.gui;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -86,12 +88,31 @@ public class PanelTimkiem extends JPanel{
 			public boolean isCellEditable(int row, int column){return false;}}
 		);
 		jstable.setBounds(5, 5, 740, 140);
+		addListener();
 	}
 	private void setFone(JLabel jl) {
 		jl.setBorder(null);
 		jl.setFont(new Font("", Font.ITALIC, 12));
 		jl.setOpaque(false);
 		jl.setForeground(Color.RED);
+	}
+	private void addListener() {
+		jbTk.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		}); 
+		jbHuy.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		}); 
 	}
 	JPanel jpanel;
 	JButton jbTk,jbHuy;

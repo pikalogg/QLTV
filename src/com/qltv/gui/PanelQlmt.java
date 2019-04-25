@@ -2,6 +2,8 @@ package com.qltv.gui;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -97,6 +99,11 @@ public class PanelQlmt extends JTabbedPane{
 		setFone(jlMLslsdm);
 		setFone(jlMLtdg);
 		setFone(jlMLtn);
+		
+		jtMLtdg.setEditable(false);
+		jtMLslsdm.setEditable(false);
+		jtMLtn.setEditable(false);
+		
 		jlMLmdg.setBounds(10, 5, 100, 30);
 		jlMLtdg.setBounds(10, 84, 100, 30);
 		jlMLslsdm.setBounds(10, 131, 200, 30);
@@ -107,11 +114,13 @@ public class PanelQlmt extends JTabbedPane{
 		jtMLtn.setBounds(10, 203, 132, 25);
 		jbMLkt.setBounds(35, 62, 82, 25);
 			// --Mc-- //
-		jlMCms = new JLabel("Mã sách");
+		jlMCms = new JLabel("*Mã sách");
 		jtMCms = new JTextField();
 		jtMCselect = new JTextArea();
 		jsMCselect = new JScrollPane();
 		jsMCselect.setViewportView(jtMCselect);
+		jtMCselect.setEditable(false);
+		jtMCselect.setBackground(new Color(1f,1f,1f,0.2f));
 		jtMCselect.setLineWrap(true);
 		jtMCselect.setWrapStyleWord(true);
 		jsMCselect.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -160,8 +169,8 @@ public class PanelQlmt extends JTabbedPane{
 		
 		// --panelTra--//
 			// --TL-- //
-		jlTLmdg = new JLabel("Mã độc giả");
-		jlTLms = new JLabel("Mã sách");
+		jlTLmdg = new JLabel("*Mã độc giả");
+		jlTLms = new JLabel("*Mã sách");
 		jlTLtp = new JLabel("Tiền phạt");
 		jtTLmdg = new JTextField();
 		jtTLms = new JTextField();
@@ -183,6 +192,7 @@ public class PanelQlmt extends JTabbedPane{
 		setFone(jlTLmdg);
 		setFone(jlTLms);
 		setFone(jlTLtp);
+		jtTLtp.setEditable(false);
 		
 		jlTLmdg.setBounds(10, 5, 100, 30);
 		jlTLms.setBounds(10, 81, 100, 30);
@@ -226,7 +236,81 @@ public class PanelQlmt extends JTabbedPane{
 		jl.setForeground(Color.WHITE);
 	}
 	private void addListener() {
-		
+		//ML
+		jbMLkt.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		//MC
+		jbMCkt.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		jbMCthem.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		jbMCms.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		}); 
+		jbMchuy.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		}); 
+		//TL
+		jbTLkt.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		}); 
+		jbTLtra.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		}); 
+		jbTLmat.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		}); 
+		jbTLhuy.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		}); 
 	}
 	JPanel panelMuon, panelTra;
 	JLabel jlbgr1, jlbgr2;
