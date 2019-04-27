@@ -1,13 +1,19 @@
-package com.qltv.dal;
+package com.qltv.bll;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.swing.table.DefaultTableModel;
+
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
+import com.qltv.dal.MyConnector;
 
-public class Mydata {
+import net.proteanit.sql.DbUtils;
+
+public class SqlCommands {
 	private static Connection con = new MyConnector().connect();
+
 	public static PreparedStatement runSqlCommands(String sql) {
 		PreparedStatement ps = null;
 		try {
@@ -26,4 +32,19 @@ public class Mydata {
 		}
 		return rs;
 	}
+	
+	
+	public static DefaultTableModel getTableModel(String tableName, String[] columnNames) {
+		DefaultTableModel model = (DefaultTableModel) DbUtils.resultSetToTableModel(selectCommands("SELECT * FROM docgia"));
+		model.setColumnIdentifiers(columnNames);
+		return model;
+	}
+	public static interface tableName{
+		String DOCGIA = "docgia";
+		String SACH = "sach";
+	}
+	public static interface columnNames{
+		
+	}
+	
 }

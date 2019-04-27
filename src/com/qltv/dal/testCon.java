@@ -5,6 +5,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import com.qltv.bll.SqlCommands;
+
 import net.proteanit.sql.DbUtils;
 
 public class testCon extends JFrame{
@@ -21,7 +23,7 @@ public class testCon extends JFrame{
 		
 		getContentPane().add(jScrollPane);
 		jScrollPane.setBounds(0, 0, 500, 400);
-		DefaultTableModel data = (DefaultTableModel) DbUtils.resultSetToTableModel(Mydata.selectCommands("SELECT * FROM docgia"));
+		DefaultTableModel data = (DefaultTableModel) DbUtils.resultSetToTableModel(SqlCommands.selectCommands("SELECT * FROM docgia"));
 		String[] columnNames = {
 		        "21 21", "21 12", "1", "ews","Gender","4","54","rgw"
 		    };

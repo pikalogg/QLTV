@@ -17,11 +17,13 @@ public class MainGUI extends JFrame{
 
 	public MainGUI() {
 		setTitle("Main");
-		setSize(900, 540);
-		setUndecorated(true);
+//		setSize(900,540);
+//		setUndecorated(true);
+		setSize(906, 565);
+		setResizable(false);
 		getContentPane().setLayout(null);
 		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		
 		//
 		panelDocgia = new PanelQldg();

@@ -17,11 +17,13 @@ public class HomeGui extends JFrame{
 
 	public HomeGui() {
 		setTitle("Home");
-		setSize(900, 500);
-		setUndecorated(true);
+//		setSize(900, 500);
+//		setUndecorated(true);
+		setSize(906, 525);
+		setResizable(false);
 		getContentPane().setLayout(null);
 		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 
 		//--text--//
 		jlTitle = new JLabel("Quản lý thư viện");

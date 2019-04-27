@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>330</x>
+      <y>240</y>
+      <w>170</w>
+      <h>190</h>
+    </coordinates>
+    <panel_attributes>_Sach_
+--
+int: masach	
+varchar(50): tensach	
+varchar(50): theloai	
+varchar(50): tacgia
+varchar(50): nxb	
+date: ngaynhap	
+date: ngayxb	
+int: giatri	
+int: soluong</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>330</x>
+      <y>30</y>
+      <w>170</w>
+      <h>160</h>
+    </coordinates>
+    <panel_attributes>_DocGia_
+--
+int: mathe	
+varchar(50): hoten	
+varchar(50): email	
+date: ngaysinh	
+date: ngaydk	
+text: diachi
+int: tongtienno
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>580</x>
+      <y>270</y>
+      <w>170</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>_PhieuTra_
+--
+int: mapt	
+int: mathe
+int: masach
+date: ngaytra
+int: tienphatkynay
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>100</x>
+      <y>250</y>
+      <w>170</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>_PhieuMuon_
+--
+int: mapm	
+int: mathe
+int: masach
+date: ngaymuon	
+int: trangthai
+&lt;&lt;1: tra 0: chua&gt;&gt;
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>70</x>
+      <y>50</y>
+      <w>190</w>
+      <h>130</h>
+    </coordinates>
+    <panel_attributes>_QuyDinh_
+--
+int: mucphat
+&lt;&lt;tienphat = mucphat * giatri&gt;&gt;
+int: tuoimax	
+int: tuoimin	
+int: songayduocmuon	
+int: sosachduocmuon	</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>840</x>
+      <y>170</y>
+      <w>210</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>_object: Class_
+--
+id: Long="36548"
+[waiting for message]</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>490</x>
+      <y>260</y>
+      <w>110</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;50.0;10.0;50.0;80.0;90.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>490</x>
+      <y>50</y>
+      <w>110</w>
+      <h>290</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;70.0;10.0;70.0;270.0;90.0;270.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>260</x>
+      <y>50</y>
+      <w>90</w>
+      <h>260</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>70.0;10.0;30.0;10.0;30.0;240.0;10.0;240.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>260</x>
+      <y>260</y>
+      <w>90</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
+    <additional_attributes>70.0;10.0;50.0;10.0;50.0;50.0;10.0;50.0</additional_attributes>
+  </element>
+</diagram>
