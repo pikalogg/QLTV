@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -17,6 +18,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
+
+import com.qltv.bll.CmdLines;
+import com.qltv.bll.SqlCommands;
+import com.qltv.bll.MyMatchet;
 
 public class PanelQlmt extends JTabbedPane{
 	private static final long serialVersionUID = 1L;
@@ -103,6 +108,9 @@ public class PanelQlmt extends JTabbedPane{
 		jtMLtdg.setEditable(false);
 		jtMLslsdm.setEditable(false);
 		jtMLtn.setEditable(false);
+		jtMLtdg.setBackground(Color.GREEN);
+		jtMLslsdm.setBackground(Color.GREEN);
+		jtMLtn.setBackground(Color.GREEN);
 		
 		jlMLmdg.setBounds(10, 5, 100, 30);
 		jlMLtdg.setBounds(10, 84, 100, 30);
@@ -120,10 +128,11 @@ public class PanelQlmt extends JTabbedPane{
 		jsMCselect = new JScrollPane();
 		jsMCselect.setViewportView(jtMCselect);
 		jtMCselect.setEditable(false);
-		jtMCselect.setBackground(new Color(1f,1f,1f,0.2f));
+		jtMCselect.setBackground(Color.GREEN);
 		jtMCselect.setLineWrap(true);
 		jtMCselect.setWrapStyleWord(true);
 		jsMCselect.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		jsMCselect.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 		jbMCkt = new JButton("Kiểm tra");
 		jbMCthem = new JButton("Thêm");
 		jbMCms = new JButton("Mượn");
@@ -149,22 +158,11 @@ public class PanelQlmt extends JTabbedPane{
 		jsMtable = new JScrollPane();
 		jsMtable.setViewportView(Mtable);
 		jpMR.add(jsMtable);
-		Mtable.setModel(new DefaultTableModel(
-            new Object [][] {
-            	{null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4","Title 5", "Title 6", "Title 7", "Title 8"
-            })
-			{
-			private static final long serialVersionUID = 1L;
-			public boolean isCellEditable(int row, int column){return false;}}
-		);
+		Mmodel = SqlCommands.GetTableModel(SqlCommands.SelectCommands(CmdLines.selectTable.PHIEUMUON), CmdLines.columnNames.PHIEUMUON);
+		Mtable.setModel(Mmodel);
 		jsMtable.setBounds(5, 5, 450, 240);
+		
+		sachmuon = new LinkedList<String>();
 		// --endMuon--//
 		
 		// --panelTra--//
@@ -193,6 +191,7 @@ public class PanelQlmt extends JTabbedPane{
 		setFone(jlTLms);
 		setFone(jlTLtp);
 		jtTLtp.setEditable(false);
+		jtTLtp.setBackground(Color.GREEN);
 		
 		jlTLmdg.setBounds(10, 5, 100, 30);
 		jlTLms.setBounds(10, 81, 100, 30);
@@ -210,21 +209,8 @@ public class PanelQlmt extends JTabbedPane{
 		jsTtable = new JScrollPane();
 		jsTtable.setViewportView(Ttable);
 		jpTR.add(jsTtable);
-		Ttable.setModel(new DefaultTableModel(
-            new Object [][] {
-            	{null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4","Title 5", "Title 6", "Title 7", "Title 8"
-            })
-			{
-			private static final long serialVersionUID = 1L;
-			public boolean isCellEditable(int row, int column){return false;}}
-		);
+		Tmodel = SqlCommands.GetTableModel(SqlCommands.SelectCommands(CmdLines.selectTable.PHIEUTRA), CmdLines.columnNames.PHIEUTRA);
+		Ttable.setModel(Tmodel);
 		jsTtable.setBounds(5, 5, 570, 240);
 		// --endTra--//
 		addListener();
@@ -241,8 +227,16 @@ public class PanelQlmt extends JTabbedPane{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
+				int mathe ;
+				if (MyMatchet.Chet(MyMatchet.Myregex.MATHE, jtMLmdg.getText())) {
+					mathe = MyMatchet.ConvertMathe(jtMLmdg.getText());
+					Mmodel =SqlCommands.GetTableModel(SqlCommands.SelectPM_mdg(mathe), CmdLines.columnNames.PHIEUMUON);
+					//
+					//ghi tên tuổi vào mấy ô bên dưới nữa
+				}
+				else {
+					System.out.println("Không phải mã thẻ rồi!!");
+				}
 			}
 		});
 		//MC
@@ -251,23 +245,48 @@ public class PanelQlmt extends JTabbedPane{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+				int masach ;
+				if (MyMatchet.Chet(MyMatchet.Myregex.MASACH, jtMCms.getText())) {
+					masach = MyMatchet.ConvertMasach(jtMCms.getText());
+					Mmodel = SqlCommands.GetTableModel(SqlCommands.SelectSach_ms(masach), CmdLines.columnNames.SACH);
+					// cho biết là có cuốn đó mà chọn thôi
+				}
+				else {
+					System.out.println("Không phải mã sách rồi!!");
+				}
 			}
 		});
 		jbMCthem.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
+				int sl = sachmuon.size();
+				try {
+					sl += Integer.parseInt(jtMLslsdm.getText());
+				} catch (Exception e2) {
+					System.out.println("chưa khai tên nữa đòi mượn giề !!");
+				}
+				if (sl>=3){ //so với quy định chứ không phải 3 đâu
+					System.out.println("Mượn nhiều lắm rồi thôi đê!!!!!!");
+				}
+				else if(Mtable.getRowCount()==1) {
+					sachmuon.add(jtMCms.getText());
+					if (sachmuon.size()<3)
+						jtMCselect.setText(jtMCselect.getText() + jtMCms.getText() + "\n");
+					else jtMCselect.setText(jtMCselect.getText() + jtMCms.getText());
+				}
 			}
 		});
 		jbMCms.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
+				// mượn hết đống sách trong list chứ gì nữa, làm đi
+				// nhớ bớt sách trong database nha, kiểm sách còn > 0 mới cho mượn được nha 
+				// load lại cái model nữa ^^
 				
+				jtMCselect.setText("");
+				sachmuon = new LinkedList<String>();
 			}
 		}); 
 		jbMchuy.addActionListener(new ActionListener() {
@@ -275,7 +294,10 @@ public class PanelQlmt extends JTabbedPane{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				//xóa hết mọi thứ , load lại model đi
 				
+				jtMCselect.setText("");
+				sachmuon = new LinkedList<String>();
 			}
 		}); 
 		//TL
@@ -284,6 +306,7 @@ public class PanelQlmt extends JTabbedPane{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				//thay cái bảng tìm theo độc giả vào kia
 				
 			}
 		}); 
@@ -292,6 +315,8 @@ public class PanelQlmt extends JTabbedPane{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				// trả sách đê, xem có phải đền không, nhớ cộng lại vào database
+				// lại load model, nhưng là tìm theo độc giả nha
 				
 			}
 		}); 
@@ -300,7 +325,8 @@ public class PanelQlmt extends JTabbedPane{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+				// thôi hỏng, đền tiền
+				// lại load model, nhưng là tìm theo độc giả nha
 			}
 		}); 
 		jbTLhuy.addActionListener(new ActionListener() {
@@ -308,7 +334,7 @@ public class PanelQlmt extends JTabbedPane{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+				// xóa hết chứ gì nữa, load load
 			}
 		}); 
 	}
@@ -326,8 +352,11 @@ public class PanelQlmt extends JTabbedPane{
 	JTextArea jtMCselect;
 	JScrollPane jsMCselect;
 	JButton jbMCkt, jbMCthem, jbMCms, jbMchuy;
+	
+	LinkedList<String> sachmuon;
 	// MR
 	JTable Mtable;
+	DefaultTableModel Mmodel;
 	JScrollPane jsMtable;
 	// TL
 	JLabel jlTLmdg, jlTLms, jlTLtp;
@@ -335,5 +364,6 @@ public class PanelQlmt extends JTabbedPane{
 	JButton jbTLkt, jbTLtra, jbTLmat, jbTLhuy;
 	// TR
 	JTable Ttable;
+	DefaultTableModel Tmodel;
 	JScrollPane jsTtable;
 }

@@ -16,9 +16,10 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import com.qltv.bll.CmdLines;
+import com.qltv.bll.SqlCommands;
 
 public class PanelThongke extends JPanel{
 	private static final long serialVersionUID = 1L;
@@ -93,21 +94,7 @@ public class PanelThongke extends JPanel{
 		table = new JTable();
 		jpanel.add(jstable);
 		jstable.setViewportView(table);
-		table.setModel(new DefaultTableModel(
-            new Object [][] {
-            	{null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4","Title 5", "Title 6", "Title 7", "Title 8"
-            })
-			{
-			private static final long serialVersionUID = 1L;
-			public boolean isCellEditable(int row, int column){return false;}}
-		);
+		table.setModel(SqlCommands.GetTableModel(SqlCommands.SelectCommands(CmdLines.selectTable.PHIEUMUON), CmdLines.columnNames.PHIEUMUON));
 		jstable.setBounds(5, 5, 740, 140);
 		addListener();
 	}
@@ -122,8 +109,15 @@ public class PanelThongke extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (buttonGroup.getSelection()!=null)
-				System.out.println(buttonGroup.getSelection().getActionCommand());
+				if (buttonGroup.getSelection()==null) {
+					System.out.println("chọn lấy một kiểu kiểm tra đi chứ");
+				}
+				else if (buttonGroup.getSelection().getActionCommand().equals("theongay")) {
+					// 3 trường hợp của cái cbbox xử lý riêng ra
+				}
+				else {
+					// 3 trường hợp của cái cbbox xử lý riêng ra
+				}
 			}
 		});
 	}

@@ -17,6 +17,9 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import com.qltv.bll.CmdLines;
+import com.qltv.bll.SqlCommands;
+import com.qltv.bll.MyMatchet;
 
 public class PanelQldg extends JPanel{
 	private static final long serialVersionUID = 1L;
@@ -94,21 +97,9 @@ public class PanelQldg extends JPanel{
 		table = new JTable();
 		rightPanel.add(jsTable);
 		jsTable.setViewportView(table);
-		table.setModel(new DefaultTableModel(
-            new Object [][] {
-            	{null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4","Title 5", "Title 6", "Title 7", "Title 8"
-            })
-			{
-			private static final long serialVersionUID = 1L;
-			public boolean isCellEditable(int row, int column){return false;}}
-		);
+		model = SqlCommands.GetTableModel(SqlCommands.SelectCommands(CmdLines.selectTable.DOCGIA), CmdLines.columnNames.DOCGIA);
+		
+		table.setModel(model);
 		jsTable.setBounds(5, 5, 570, 240);
 		addListener();
 	}
@@ -120,35 +111,57 @@ public class PanelQldg extends JPanel{
 	}
 	private void addListener() {
 		jbThem.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
+				if (jtTen.getText().equals("")) {
+					System.out.println("Chưa nhập tên kìa!!");
+				}
+				else if (!MyMatchet.Chet(MyMatchet.Myregex.EMAIL, jtEmail.getText())) {
+					System.out.println("nhập Email dạng này này \"Example@email.com\"");
+				}
+				else if (dpNgaySinh.toString()==null) {
+					System.out.println("chưa nhập ngày sinh luôn");
+				}
+				else {
+					if (jtDiachi.getText().equals("")) {
+						System.out.println("Tui cho địa chỉ bừa ngoài nghĩa địa đó nha :<\n");
+					}
+					System.out.println("đã tạo một độc giả mang tên " + jtTen.getText());
+					model = SqlCommands.GetTableModel(SqlCommands.SelectCommands(CmdLines.selectTable.DOCGIA), CmdLines.columnNames.DOCGIA);
+				}
 			}
 		});
 		jbSua.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
+				new FrameSuaDocGia().setVisible(true);
+				model = SqlCommands.GetTableModel(SqlCommands.SelectCommands(CmdLines.selectTable.DOCGIA), CmdLines.columnNames.DOCGIA);
 			}
 		});
 		jbXoa.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
+				try {
+					String mathe = (String)model.getValueAt(table.getSelectedRow(), 0);
+					//xoa thang day di
+					System.out.println(mathe + " đã bị xóa...mãi mãi!!");
+					model = SqlCommands.GetTableModel(SqlCommands.SelectCommands(CmdLines.selectTable.DOCGIA), CmdLines.columnNames.DOCGIA);
+				} catch (Exception e2) {
+					System.out.println("chưa chọn thằng để xóa");
+				}
 			}
 		});
 		jbHuy.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
+				jtDiachi.setText("");
+				jtEmail.setText("");
+				jtTen.setText("");
+				dpNgaySinh.setText("");
+				table.setSelectionMode(table.getRowCount());
+				model = SqlCommands.GetTableModel(SqlCommands.SelectCommands(CmdLines.selectTable.DOCGIA), CmdLines.columnNames.DOCGIA);
 			}
 		});
 	}
@@ -160,4 +173,5 @@ public class PanelQldg extends JPanel{
 	JTextArea jtDiachi;
 	JScrollPane jsDiachi, jsTable;
 	JTable table;
+	DefaultTableModel model;
 }

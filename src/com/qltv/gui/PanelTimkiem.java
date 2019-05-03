@@ -12,7 +12,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
+
+import com.qltv.bll.CmdLines;
+import com.qltv.bll.SqlCommands;
 
 public class PanelTimkiem extends JPanel{
 	private static final long serialVersionUID = 1L;
@@ -72,21 +74,7 @@ public class PanelTimkiem extends JPanel{
 		table = new JTable();
 		jpanel.add(jstable);
 		jstable.setViewportView(table);
-		table.setModel(new DefaultTableModel(
-            new Object [][] {
-            	{null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4","Title 5", "Title 6", "Title 7", "Title 8"
-            })
-			{
-			private static final long serialVersionUID = 1L;
-			public boolean isCellEditable(int row, int column){return false;}}
-		);
+		table.setModel(SqlCommands.GetTableModel(SqlCommands.SelectCommands(CmdLines.selectTable.SACH), CmdLines.columnNames.SACH));
 		jstable.setBounds(5, 5, 740, 140);
 		addListener();
 	}
@@ -102,15 +90,15 @@ public class PanelTimkiem extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+				// tìm đi, 4 cái dễ mà
 			}
 		}); 
 		jbHuy.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
+				// lại xóa hết thôi
+				// cho cả bảng về sơ khai nữa
 			}
 		}); 
 	}

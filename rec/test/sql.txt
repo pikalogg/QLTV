@@ -1,0 +1,35 @@
+CREATE TABLE docgia
+(
+  	id int not null PRIMARY KEY AUTO_INCREMENT,
+	ma VARCHAR(8) GENERATED ALWAYS AS(RIGHT("000",id)),
+    pi int
+)
+AS 'A' + RIGHT('00000000' + CAST(ID AS VARCHAR(8)), 8) PERSISTED
+
+CREATE TABLE YourTable 
+    (ID INT IDENTITY(1,1) NOT NULL PRIMARY KEY CLUSTERED, 
+    AlphaID AS 'A' + RIGHT('00000000' + CAST(ID AS VARCHAR(8)), 8) PERSISTED, 
+    .... your other columns here.... 
+) 
+
+CREATE TABLE hh
+(
+    ID int PRIMARY KEY AUTO_INCREMENT,
+    AlphaID varchar(50) GENERATED ALWAYS AS(RIGHT('00000000' + CAST(ID AS VARCHAR(8)), 8)) , 
+    pi int
+);
+
+SELECT RIGHT(concat('00000000',CAST(pi AS VARCHAR(8))), 8) as cc
+FROM hh
+
+select CAST(pi as UNSIGNED INTEGER) as colI1 from hh // thành công
+char
+
+SELECT CONCAT('DG',RIGHT(CONCAT('000000',CAST(ID AS CHAR)), 6)) AS MATHE
+FROM hh
+
+int: mapt	
+int: mathe
+int: masach
+date: ngaytra
+int: tienphatkynay

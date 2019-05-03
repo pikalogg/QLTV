@@ -12,9 +12,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.table.DefaultTableModel;
 
 import com.github.lgooddatepicker.components.DatePicker;
+import com.qltv.bll.CmdLines;
+import com.qltv.bll.SqlCommands;
 
 public class PanelQlSach extends JPanel{
 	private static final long serialVersionUID = 1L;
@@ -109,21 +110,7 @@ public class PanelQlSach extends JPanel{
 		table = new JTable();
 		rightPanel.add(jsTable);
 		jsTable.setViewportView(table);
-		table.setModel(new DefaultTableModel(
-            new Object [][] {
-            	{null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4","Title 5", "Title 6", "Title 7", "Title 8"
-            })
-			{
-			private static final long serialVersionUID = 1L;
-			public boolean isCellEditable(int row, int column){return false;}}
-		);
+		table.setModel(SqlCommands.GetTableModel(SqlCommands.SelectCommands(CmdLines.selectTable.SACH), CmdLines.columnNames.SACH));
 		jsTable.setBounds(5, 5, 550, 260);
 		addListener();
 	}
@@ -139,6 +126,8 @@ public class PanelQlSach extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				// ui thêm kìa, kiểm tra từng dòng nhập chưa nha, cẩn thận
+				
 				
 			}
 		}); 
@@ -147,7 +136,8 @@ public class PanelQlSach extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+				new FrameSuaSach().setVisible(true);
+				//load lại model
 			}
 		});
 		jbXoa.addActionListener(new ActionListener() {
@@ -155,7 +145,8 @@ public class PanelQlSach extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+				// thì làm sao xóa thôi
+				// vẫn phải load lại model
 			}
 		});
 		jbHuy.addActionListener(new ActionListener() {
@@ -163,7 +154,8 @@ public class PanelQlSach extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+				// đưa mọi thứ về sơ khai
+				// load load nào
 			}
 		});
 	}
