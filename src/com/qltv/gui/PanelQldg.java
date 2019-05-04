@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -98,7 +99,6 @@ public class PanelQldg extends JPanel{
 		rightPanel.add(jsTable);
 		jsTable.setViewportView(table);
 		model = SqlCommands.GetTableModel(SqlCommands.SelectCommands(CmdLines.selectTable.DOCGIA), CmdLines.columnNames.DOCGIA);
-		
 		table.setModel(model);
 		jsTable.setBounds(5, 5, 570, 240);
 		addListener();
@@ -114,20 +114,24 @@ public class PanelQldg extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if (jtTen.getText().equals("")) {
-					System.out.println("Chưa nhập tên kìa!!");
+					JOptionPane.showMessageDialog(null, "Chưa nhập tên kìa!!", "Message", JOptionPane.ERROR_MESSAGE);
 				}
 				else if (!MyMatchet.Chet(MyMatchet.Myregex.EMAIL, jtEmail.getText())) {
-					System.out.println("nhập Email dạng này này \"Example@email.com\"");
+					JOptionPane.showMessageDialog(null, "nhập Email dạng này này \"Example@email.com\"", "Message", JOptionPane.ERROR_MESSAGE);
 				}
-				else if (dpNgaySinh.toString()==null) {
-					System.out.println("chưa nhập ngày sinh luôn");
+				else if (dpNgaySinh.toString()==null||dpNgaySinh.toString().equals("")) {
+					JOptionPane.showMessageDialog(null, "chưa nhập ngày sinh luôn", "Message", JOptionPane.ERROR_MESSAGE);
 				}
 				else {
-					if (jtDiachi.getText().equals("")) {
-						System.out.println("Tui cho địa chỉ bừa ngoài nghĩa địa đó nha :<\n");
+					if(SqlCommands.Insertdg(jtTen.getText(), jtEmail.getText(), dpNgaySinh.toString() , jtDiachi.getText())) {
+						if (jtDiachi.getText().equals("")) {
+							JOptionPane.showMessageDialog(null, "Tui cho địa chỉ bừa ngoài nghĩa địa rồi đó nha :<");
+						}
+						else JOptionPane.showMessageDialog(null, "đã tạo một độc giả mang tên: " + jtTen.getText(), "Message", JOptionPane.PLAIN_MESSAGE);
 					}
-					System.out.println("đã tạo một độc giả mang tên " + jtTen.getText());
+					else JOptionPane.showMessageDialog(null, "Insert Error ", "Message", JOptionPane.ERROR_MESSAGE);
 					model = SqlCommands.GetTableModel(SqlCommands.SelectCommands(CmdLines.selectTable.DOCGIA), CmdLines.columnNames.DOCGIA);
+					table.setModel(model);
 				}
 			}
 		});
@@ -135,8 +139,7 @@ public class PanelQldg extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				new FrameSuaDocGia().setVisible(true);
-				model = SqlCommands.GetTableModel(SqlCommands.SelectCommands(CmdLines.selectTable.DOCGIA), CmdLines.columnNames.DOCGIA);
+				new FrameSuaDocGia(table,model).setVisible(true);
 			}
 		});
 		jbXoa.addActionListener(new ActionListener() {
@@ -144,11 +147,14 @@ public class PanelQldg extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				try {
 					String mathe = (String)model.getValueAt(table.getSelectedRow(), 0);
-					//xoa thang day di
-					System.out.println(mathe + " đã bị xóa...mãi mãi!!");
-					model = SqlCommands.GetTableModel(SqlCommands.SelectCommands(CmdLines.selectTable.DOCGIA), CmdLines.columnNames.DOCGIA);
+					if (SqlCommands.Deletedg(MyMatchet.ConvertMathe(mathe))) {
+						JOptionPane.showMessageDialog(null, mathe + " đã bị xóa...mãi mãi!!");
+						model = SqlCommands.GetTableModel(SqlCommands.SelectCommands(CmdLines.selectTable.DOCGIA), CmdLines.columnNames.DOCGIA);
+						table.setModel(model);
+					}
+					else JOptionPane.showMessageDialog(null, "Delete Error ", "Message", JOptionPane.ERROR_MESSAGE);
 				} catch (Exception e2) {
-					System.out.println("chưa chọn thằng để xóa");
+					JOptionPane.showMessageDialog(null, "chưa chọn thằng để xóa", "Message", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -160,8 +166,8 @@ public class PanelQldg extends JPanel{
 				jtEmail.setText("");
 				jtTen.setText("");
 				dpNgaySinh.setText("");
-				table.setSelectionMode(table.getRowCount());
 				model = SqlCommands.GetTableModel(SqlCommands.SelectCommands(CmdLines.selectTable.DOCGIA), CmdLines.columnNames.DOCGIA);
+				table.setModel(model);
 			}
 		});
 	}

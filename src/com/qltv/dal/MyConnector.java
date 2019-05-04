@@ -15,9 +15,8 @@ public class MyConnector {
 	public Connection Connect(String databaseName) {
 		try {
 			Class.forName(classname);
-			String myUrl = url.concat(databaseName);
+			String myUrl = url.concat(databaseName).concat("?useUnicode=yes&characterEncoding=UTF-8");
 			connection = DriverManager.getConnection(myUrl, user, pass);
-			System.out.println("Connect success!");
 		} catch (SQLException e) {
 			System.out.println("Error connection!");
 		} catch (ClassNotFoundException e) {

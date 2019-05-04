@@ -183,7 +183,7 @@ public class HomeGui extends JFrame{
 		jlExit.addMouseListener(new MouseListener() {
 			public void mouseReleased(MouseEvent e) {}
 			public void mousePressed(MouseEvent e) {
-				dispose();
+				System.exit(0);
 				}
 			public void mouseExited(MouseEvent e) {}
 			public void mouseEntered(MouseEvent e) {}

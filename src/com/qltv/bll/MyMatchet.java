@@ -21,6 +21,6 @@ public class MyMatchet {
 		String MASACH = "^(MS)[0-9][0-9][0-9][0-9][0-9][0-9]";
 		String MAPM = "^(PM)[0-9][0-9][0-9][0-9][0-9][0-9]";
 		String MAPT = "^(PT)[0-9][0-9][0-9][0-9][0-9][0-9]";
-		String EMAIL = ".+@.+\\..+";
+		String EMAIL = "[a-zA-Z\\.]+@[a-zA-Z]+\\.[a-zA-Z\\.]+";
 	}
 }

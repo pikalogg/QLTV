@@ -4,12 +4,15 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.LinkedList;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
@@ -228,14 +231,28 @@ public class PanelQlmt extends JTabbedPane{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				int mathe ;
+				ResultSet rs = null;
 				if (MyMatchet.Chet(MyMatchet.Myregex.MATHE, jtMLmdg.getText())) {
 					mathe = MyMatchet.ConvertMathe(jtMLmdg.getText());
-					Mmodel =SqlCommands.GetTableModel(SqlCommands.SelectPM_mdg(mathe), CmdLines.columnNames.PHIEUMUON);
-					//
-					//ghi tên tuổi vào mấy ô bên dưới nữa
+					Mmodel = SqlCommands.GetTableModel(SqlCommands.SelectPM_mdg(mathe), CmdLines.columnNames.PHIEUMUON);
+					Mtable.setModel(Mmodel);
+					rs = SqlCommands.SelectDG_mathe(mathe);
+					try {
+						if (rs.next()) {
+							jtMLtdg.setText(rs.getString(2));
+							jtMLslsdm.setText(rs.getString(8));
+							jtMLtn.setText(rs.getString(7));
+						}
+						else {
+							JOptionPane.showMessageDialog(null, "Không tìm thấy độc giả", "Message", JOptionPane.ERROR_MESSAGE);
+						}
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 				else {
-					System.out.println("Không phải mã thẻ rồi!!");
+					JOptionPane.showMessageDialog(null, "Điền đúng mã thẻ đi!!!", "Message", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -247,12 +264,20 @@ public class PanelQlmt extends JTabbedPane{
 				// TODO Auto-generated method stub
 				int masach ;
 				if (MyMatchet.Chet(MyMatchet.Myregex.MASACH, jtMCms.getText())) {
-					masach = MyMatchet.ConvertMasach(jtMCms.getText());
-					Mmodel = SqlCommands.GetTableModel(SqlCommands.SelectSach_ms(masach), CmdLines.columnNames.SACH);
-					// cho biết là có cuốn đó mà chọn thôi
+					try {
+						masach = MyMatchet.ConvertMasach(jtMCms.getText());
+						if (SqlCommands.SelectSach_ms(masach).next()) {
+							Mmodel = SqlCommands.GetTableModel(SqlCommands.SelectSach_ms(masach), CmdLines.columnNames.SACH);
+							Mtable.setModel(Mmodel);
+						}
+						else JOptionPane.showMessageDialog(null, "Không có quyển sách đó rồi !!!", "Message", JOptionPane.WARNING_MESSAGE);
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 				else {
-					System.out.println("Không phải mã sách rồi!!");
+					JOptionPane.showMessageDialog(null, "Đây không phải mã sách rồi!!!", "Message", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});
@@ -264,10 +289,10 @@ public class PanelQlmt extends JTabbedPane{
 				try {
 					sl += Integer.parseInt(jtMLslsdm.getText());
 				} catch (Exception e2) {
-					System.out.println("chưa khai tên nữa đòi mượn giề !!");
+					JOptionPane.showMessageDialog(null, "chưa khai tên nữa đòi mượn giề !!", "Message", JOptionPane.ERROR_MESSAGE);
 				}
 				if (sl>=3){ //so với quy định chứ không phải 3 đâu
-					System.out.println("Mượn nhiều lắm rồi thôi đê!!!!!!");
+					JOptionPane.showMessageDialog(null, "Mượn nhiều lắm rồi thôi đê!!!!!!", "Message", JOptionPane.ERROR_MESSAGE);
 				}
 				else if(Mtable.getRowCount()==1) {
 					sachmuon.add(jtMCms.getText());
@@ -281,10 +306,12 @@ public class PanelQlmt extends JTabbedPane{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// mượn hết đống sách trong list chứ gì nữa, làm đi
-				// nhớ bớt sách trong database nha, kiểm sách còn > 0 mới cho mượn được nha 
-				// load lại cái model nữa ^^
-				
+				for (String sach: sachmuon) {
+					if (SqlCommands.Muonsach(MyMatchet.ConvertMathe(jtMLmdg.getText()), MyMatchet.ConvertMasach(sach))) {
+						JOptionPane.showMessageDialog(null, "Mượn thành công sách mã:" + sach , "Message", JOptionPane.ERROR_MESSAGE);
+					}
+					else JOptionPane.showMessageDialog(null, "Không mượn được sách mã:" + sach, "Message", JOptionPane.ERROR_MESSAGE);
+				}
 				jtMCselect.setText("");
 				sachmuon = new LinkedList<String>();
 			}
@@ -293,11 +320,15 @@ public class PanelQlmt extends JTabbedPane{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				//xóa hết mọi thứ , load lại model đi
-				
+				jtMLmdg.setText("");
+				jtMLslsdm.setText("");
+				jtMLtdg.setText("");
+				jtMLtn.setText("");
 				jtMCselect.setText("");
+				jtMCms.setText("");
 				sachmuon = new LinkedList<String>();
+				Mmodel = SqlCommands.GetTableModel(SqlCommands.SelectCommands(CmdLines.selectTable.PHIEUMUON), CmdLines.columnNames.PHIEUMUON);
+				Mtable.setModel(Mmodel);
 			}
 		}); 
 		//TL
@@ -306,35 +337,74 @@ public class PanelQlmt extends JTabbedPane{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				//thay cái bảng tìm theo độc giả vào kia
-				
+				int mathe ;
+				if (MyMatchet.Chet(MyMatchet.Myregex.MATHE, jtTLmdg.getText())) {
+					mathe = MyMatchet.ConvertMathe(jtTLmdg.getText());
+					Tmodel = SqlCommands.GetTableModel(SqlCommands.SelectPM_mdg(mathe), CmdLines.columnNames.PHIEUMUON);
+					Ttable.setModel(Tmodel);
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "Điền đúng mã thẻ đi!!!", "Message", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		}); 
 		jbTLtra.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				// trả sách đê, xem có phải đền không, nhớ cộng lại vào database
-				// lại load model, nhưng là tìm theo độc giả nha
-				
+				if(MyMatchet.Chet(MyMatchet.Myregex.MATHE, jtTLmdg.getText())&&MyMatchet.Chet(MyMatchet.Myregex.MASACH, jtTLms.getText())) {
+					int mathe = MyMatchet.ConvertMathe(jtTLmdg.getText());
+					int masach = MyMatchet.ConvertMasach(jtTLms.getText());
+					int tienphat = 0;
+					if (SqlCommands.Datediff(mathe, masach)>5) { // so với số ngày được mượn cơ
+						tienphat = (SqlCommands.Datediff(mathe, masach) - 5) * 10000;
+					}
+					try {
+						if (SqlCommands.Trasach(mathe, masach, tienphat)) {
+							JOptionPane.showMessageDialog(null, "Trả thành công!!!", "Message", JOptionPane.PLAIN_MESSAGE);
+							jtTLtp.setText(tienphat+" VND");
+						}
+						else JOptionPane.showMessageDialog(null, "Lỗi Lỗi!!!", "Message", JOptionPane.ERROR_MESSAGE);
+					} catch (Exception e2) {
+						JOptionPane.showMessageDialog(null, "Lỗi rồi :v!!!", "Message", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+				else JOptionPane.showMessageDialog(null, "Sai mã sách!!!", "Message", JOptionPane.ERROR_MESSAGE);
 			}
 		}); 
 		jbTLmat.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				// thôi hỏng, đền tiền
-				// lại load model, nhưng là tìm theo độc giả nha
+				if(MyMatchet.Chet(MyMatchet.Myregex.MATHE, jtTLmdg.getText())&&MyMatchet.Chet(MyMatchet.Myregex.MASACH, jtTLms.getText())) {
+					int mathe = MyMatchet.ConvertMathe(jtTLmdg.getText());
+					int masach = MyMatchet.ConvertMasach(jtTLms.getText());
+					int tienphat = 0;
+					if (SqlCommands.Datediff(mathe, masach)>5) { // so với số ngày được mượn cơ
+						tienphat = (SqlCommands.Datediff(mathe, masach) - 5) * 10000 + SqlCommands.Giasach(masach) * 3;
+					}
+					try {
+						if (SqlCommands.Matsach(mathe, masach, tienphat)) {
+							JOptionPane.showMessageDialog(null, "Mất rồi, hix!!!", "Message", JOptionPane.PLAIN_MESSAGE);
+							jtTLtp.setText(tienphat+" VND");
+						}
+						else JOptionPane.showMessageDialog(null, "Lỗi Lỗi!!!", "Message", JOptionPane.ERROR_MESSAGE);
+					} catch (Exception e2) {
+						JOptionPane.showMessageDialog(null, "Lỗi rồi :v!!!", "Message", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+				else JOptionPane.showMessageDialog(null, "Sai mã sách!!!", "Message", JOptionPane.ERROR_MESSAGE);
 			}
 		}); 
 		jbTLhuy.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				// xóa hết chứ gì nữa, load load
+				jtTLmdg.setText("");
+				jtTLms.setText("");
+				jtTLtp.setText("");
+				Tmodel = SqlCommands.GetTableModel(SqlCommands.SelectCommands(CmdLines.selectTable.PHIEUTRA), CmdLines.columnNames.PHIEUTRA);
+				Ttable.setModel(Tmodel);
 			}
 		}); 
 	}

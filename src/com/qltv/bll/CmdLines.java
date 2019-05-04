@@ -9,7 +9,7 @@ public interface CmdLines {
 		String QUYDINH = "quydinh";
 	}
 	public static interface selectTable{
-		String DOCGIA = "SELECT CONCAT('DG',RIGHT(CONCAT('000000',CAST(mathe AS CHAR)), 6)) AS mathe, hoten, email, ngaysinh, ngaydk, diachi, CONCAT(CAST(tongtienno AS CHAR),' VND') AS tongtienno FROM docgia";
+		String DOCGIA = "SELECT CONCAT('DG',RIGHT(CONCAT('000000',CAST(mathe AS CHAR)), 6)) AS mathe, hoten, email, ngaysinh, ngaydk, diachi, CONCAT(CAST(tongtienno AS CHAR),' VND') AS tongtienno, sachmuon FROM docgia";
 		String SACH = "SELECT CONCAT('MS',RIGHT(CONCAT('000000',CAST(masach AS CHAR)), 6)) AS masach, tensach, theloai,tacgia, nxb, CONCAT(CAST(giatri AS CHAR),' VND') AS giatri, soluong FROM sach";
 		String PHIEUMUON = "SELECT CONCAT('PM',RIGHT(CONCAT('000000',CAST(mapm AS CHAR)), 6)) AS mapm,	CONCAT('DG',RIGHT(CONCAT('000000',CAST(mathe AS CHAR)), 6)) AS mathe,	CONCAT('MS',RIGHT(CONCAT('000000',CAST(masach AS CHAR)), 6)) AS masach, ngaymuon, CASE trangthai WHEN 1 THEN 'complete' WHEN 0 THEN '' END AS trangthai FROM phieumuon";
 		String PHIEUTRA = "SELECT CONCAT('PT',RIGHT(CONCAT('000000',CAST(mapt AS CHAR)), 6)) AS mapt,	CONCAT('DG',RIGHT(CONCAT('000000',CAST(mathe AS CHAR)), 6)) AS mathe,	CONCAT('MS',RIGHT(CONCAT('000000',CAST(masach AS CHAR)), 6)) AS masach,	ngaytra, tienphatkinay FROM phieutra";
@@ -17,7 +17,7 @@ public interface CmdLines {
 	}
 	public static interface columnNames{
 		String[] DOCGIA = {
-		        "Mã thẻ", "Họ Tên", "Email", "Ngày Sinh","Ngày ĐK","Địa chỉ","Tiền nợ"
+		        "Mã thẻ", "Họ Tên", "Email", "Ngày Sinh","Ngày ĐK","Địa chỉ","Tiền nợ", "Sách mượn"
 		    };
 		String[] SACH = {
 				"Mã sách", "Tên sách", "Thể loại", "Tác giả", "NXB" , "giá trị", "số lượng"

@@ -8,13 +8,16 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.qltv.bll.CmdLines;
+import com.qltv.bll.MyMatchet;
 import com.qltv.bll.SqlCommands;
 
 public class PanelQlSach extends JPanel{
@@ -110,7 +113,8 @@ public class PanelQlSach extends JPanel{
 		table = new JTable();
 		rightPanel.add(jsTable);
 		jsTable.setViewportView(table);
-		table.setModel(SqlCommands.GetTableModel(SqlCommands.SelectCommands(CmdLines.selectTable.SACH), CmdLines.columnNames.SACH));
+		model = SqlCommands.GetTableModel(SqlCommands.SelectCommands(CmdLines.selectTable.SACH), CmdLines.columnNames.SACH);
+		table.setModel(model);
 		jsTable.setBounds(5, 5, 550, 260);
 		addListener();
 	}
@@ -125,37 +129,68 @@ public class PanelQlSach extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				// ui thêm kìa, kiểm tra từng dòng nhập chưa nha, cẩn thận
-				
-				
+				if (jtTensach.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "chưa nhập tên sách", "Message", JOptionPane.ERROR_MESSAGE);
+				} else if (jtSoluong.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "chưa nhập số lượng", "Message", JOptionPane.ERROR_MESSAGE);
+				} else if (jtTacgia.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "chưa nhập tên tác giả", "Message", JOptionPane.ERROR_MESSAGE);
+				} else if (jtNxb.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "chưa nhập nxb luôn", "Message", JOptionPane.ERROR_MESSAGE);
+				} else if (dpNgxb.toString()==null&&dpNgxb.toString().equals("")) {
+					JOptionPane.showMessageDialog(null, "chưa nhập ngàyxb nữa", "Message", JOptionPane.ERROR_MESSAGE);
+				} else if (jtTheLoai.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "chưa nhập thể loại kìa", "Message", JOptionPane.ERROR_MESSAGE);
+				} else if (jtDongia.getText().equals("")) {
+					JOptionPane.showMessageDialog(null, "còn đơn giá kia kìa", "Message", JOptionPane.ERROR_MESSAGE);
+				} else {
+					try {
+						if(SqlCommands.Insertsach(jtTensach.getText(), jtTheLoai.getText(), jtTacgia.getText(), jtNxb.getText(), dpNgxb.toString(), Integer.parseInt(jtDongia.getText()), Integer.parseInt(jtSoluong.getText()))) {
+							JOptionPane.showMessageDialog(null, "Insert thành công ", "Message", JOptionPane.ERROR_MESSAGE);
+						}
+					} catch (Exception e2) {
+						JOptionPane.showMessageDialog(null, "lại nhập sai gì rồi", "Message", JOptionPane.ERROR_MESSAGE);
+					}
+					model = SqlCommands.GetTableModel(SqlCommands.SelectCommands(CmdLines.selectTable.SACH), CmdLines.columnNames.SACH);
+					table.setModel(model);
+				}
 			}
 		}); 
 		jbSua.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				new FrameSuaSach().setVisible(true);
-				//load lại model
+				new FrameSuaSach(table,model).setVisible(true);
 			}
 		});
 		jbXoa.addActionListener(new ActionListener() {
-			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				// thì làm sao xóa thôi
-				// vẫn phải load lại model
+				try {
+					String masach = (String)model.getValueAt(table.getSelectedRow(), 0);
+					if (SqlCommands.Deletedg(MyMatchet.ConvertMathe(masach))) {/// if này sửa thành xóa sách
+						JOptionPane.showMessageDialog(null, masach + " đã bị xóa...mãi mãi!!");
+						model = SqlCommands.GetTableModel(SqlCommands.SelectCommands(CmdLines.selectTable.SACH), CmdLines.columnNames.SACH);
+						table.setModel(model);
+					}
+					else JOptionPane.showMessageDialog(null, "Delete Error ", "Message", JOptionPane.ERROR_MESSAGE);
+				} catch (Exception e2) {
+					JOptionPane.showMessageDialog(null, "chưa chọn sách để xóa", "Message", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		jbHuy.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				// đưa mọi thứ về sơ khai
-				// load load nào
+				jtTensach.setText("");
+				jtSoluong.setText("");
+				jtTacgia.setText("");
+				jtNxb.setText("");
+				jtTheLoai.setText("");
+				jtDongia.setText("");
+				dpNgxb.setText("");
+				model = SqlCommands.GetTableModel(SqlCommands.SelectCommands(CmdLines.selectTable.SACH), CmdLines.columnNames.SACH);
+				table.setModel(model);
 			}
 		});
 	}
@@ -167,5 +202,6 @@ public class PanelQlSach extends JPanel{
 	DatePicker dpNgxb;
 	
 	JTable table;
+	DefaultTableModel model;
 	JScrollPane jsTable;
 }
