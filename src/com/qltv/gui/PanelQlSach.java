@@ -146,7 +146,7 @@ public class PanelQlSach extends JPanel{
 				} else {
 					try {
 						if(SqlCommands.Insertsach(jtTensach.getText(), jtTheLoai.getText(), jtTacgia.getText(), jtNxb.getText(), dpNgxb.toString(), Integer.parseInt(jtDongia.getText()), Integer.parseInt(jtSoluong.getText()))) {
-							JOptionPane.showMessageDialog(null, "Insert thành công ", "Message", JOptionPane.ERROR_MESSAGE);
+							JOptionPane.showMessageDialog(null, "Insert thành công ", "Message", JOptionPane.PLAIN_MESSAGE);
 						}
 					} catch (Exception e2) {
 						JOptionPane.showMessageDialog(null, "lại nhập sai gì rồi", "Message", JOptionPane.ERROR_MESSAGE);
@@ -167,7 +167,7 @@ public class PanelQlSach extends JPanel{
 			public void actionPerformed(ActionEvent e) {
 				try {
 					String masach = (String)model.getValueAt(table.getSelectedRow(), 0);
-					if (SqlCommands.Deletedg(MyMatchet.ConvertMathe(masach))) {/// if này sửa thành xóa sách
+					if (SqlCommands.Deletesach(MyMatchet.ConvertMasach(masach))) {
 						JOptionPane.showMessageDialog(null, masach + " đã bị xóa...mãi mãi!!");
 						model = SqlCommands.GetTableModel(SqlCommands.SelectCommands(CmdLines.selectTable.SACH), CmdLines.columnNames.SACH);
 						table.setModel(model);

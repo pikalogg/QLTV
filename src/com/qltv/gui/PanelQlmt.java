@@ -291,7 +291,7 @@ public class PanelQlmt extends JTabbedPane{
 				} catch (Exception e2) {
 					JOptionPane.showMessageDialog(null, "chưa khai tên nữa đòi mượn giề !!", "Message", JOptionPane.ERROR_MESSAGE);
 				}
-				if (sl>=3){ //so với quy định chứ không phải 3 đâu
+				if (sl>=SqlCommands.sosachduocmuon){ 
 					JOptionPane.showMessageDialog(null, "Mượn nhiều lắm rồi thôi đê!!!!!!", "Message", JOptionPane.ERROR_MESSAGE);
 				}
 				else if(Mtable.getRowCount()==1) {
@@ -308,7 +308,7 @@ public class PanelQlmt extends JTabbedPane{
 			public void actionPerformed(ActionEvent e) {
 				for (String sach: sachmuon) {
 					if (SqlCommands.Muonsach(MyMatchet.ConvertMathe(jtMLmdg.getText()), MyMatchet.ConvertMasach(sach))) {
-						JOptionPane.showMessageDialog(null, "Mượn thành công sách mã:" + sach , "Message", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Mượn thành công sách mã:" + sach );
 					}
 					else JOptionPane.showMessageDialog(null, "Không mượn được sách mã:" + sach, "Message", JOptionPane.ERROR_MESSAGE);
 				}
@@ -356,8 +356,8 @@ public class PanelQlmt extends JTabbedPane{
 					int mathe = MyMatchet.ConvertMathe(jtTLmdg.getText());
 					int masach = MyMatchet.ConvertMasach(jtTLms.getText());
 					int tienphat = 0;
-					if (SqlCommands.Datediff(mathe, masach)>5) { // so với số ngày được mượn cơ
-						tienphat = (SqlCommands.Datediff(mathe, masach) - 5) * 10000;
+					if (SqlCommands.Datediff(mathe, masach)> SqlCommands.songayduocmuon) { 
+						tienphat = (SqlCommands.Datediff(mathe, masach) - SqlCommands.songayduocmuon) * SqlCommands.tienphatmotngay;
 					}
 					try {
 						if (SqlCommands.Trasach(mathe, masach, tienphat)) {
@@ -380,8 +380,8 @@ public class PanelQlmt extends JTabbedPane{
 					int mathe = MyMatchet.ConvertMathe(jtTLmdg.getText());
 					int masach = MyMatchet.ConvertMasach(jtTLms.getText());
 					int tienphat = 0;
-					if (SqlCommands.Datediff(mathe, masach)>5) { // so với số ngày được mượn cơ
-						tienphat = (SqlCommands.Datediff(mathe, masach) - 5) * 10000 + SqlCommands.Giasach(masach) * 3;
+					if (SqlCommands.Datediff(mathe, masach)> SqlCommands.songayduocmuon) { 
+						tienphat = (SqlCommands.Datediff(mathe, masach) - SqlCommands.songayduocmuon) * SqlCommands.tienphatmotngay + SqlCommands.Giasach(masach) * SqlCommands.mucphat;
 					}
 					try {
 						if (SqlCommands.Matsach(mathe, masach, tienphat)) {

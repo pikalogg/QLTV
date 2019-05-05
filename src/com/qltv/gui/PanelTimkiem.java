@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 import com.qltv.bll.CmdLines;
 import com.qltv.bll.SqlCommands;
@@ -74,7 +75,8 @@ public class PanelTimkiem extends JPanel{
 		table = new JTable();
 		jpanel.add(jstable);
 		jstable.setViewportView(table);
-		table.setModel(SqlCommands.GetTableModel(SqlCommands.SelectCommands(CmdLines.selectTable.SACH), CmdLines.columnNames.SACH));
+		model = SqlCommands.GetTableModel(SqlCommands.SelectCommands(CmdLines.selectTable.SACH), CmdLines.columnNames.SACH);
+		table.setModel(model);
 		jstable.setBounds(5, 5, 740, 140);
 		addListener();
 	}
@@ -89,16 +91,20 @@ public class PanelTimkiem extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				// tìm đi, 4 cái dễ mà
+				model = SqlCommands.GetTableModel(SqlCommands.SelectSach_tk(jtTensach.getText(), jtTacgia.getText(), jtTheloai.getText(), jtNXB.getText()), CmdLines.columnNames.SACH);
+				table.setModel(model);
 			}
 		}); 
 		jbHuy.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// lại xóa hết thôi
-				// cho cả bảng về sơ khai nữa
+				jtTensach.setText("");
+				jtTacgia.setText("");
+				jtTheloai.setText("");
+				jtNXB.setText("");
+				model = SqlCommands.GetTableModel(SqlCommands.SelectCommands(CmdLines.selectTable.SACH), CmdLines.columnNames.SACH);
+				table.setModel(model);
 			}
 		}); 
 	}
@@ -108,5 +114,6 @@ public class PanelTimkiem extends JPanel{
 	JTextField jtTensach,jtTacgia,jtTheloai,jtNXB;
 	
 	JTable table;
+	DefaultTableModel model;
 	JScrollPane jstable;
 }

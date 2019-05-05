@@ -11,11 +11,13 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.qltv.bll.CmdLines;
@@ -94,7 +96,8 @@ public class PanelThongke extends JPanel{
 		table = new JTable();
 		jpanel.add(jstable);
 		jstable.setViewportView(table);
-		table.setModel(SqlCommands.GetTableModel(SqlCommands.SelectCommands(CmdLines.selectTable.PHIEUMUON), CmdLines.columnNames.PHIEUMUON));
+		model = SqlCommands.GetTableModel(SqlCommands.SelectCommands(CmdLines.selectTable.PHIEUMUON), CmdLines.columnNames.PHIEUMUON);
+		table.setModel(model);
 		jstable.setBounds(5, 5, 740, 140);
 		addListener();
 	}
@@ -109,14 +112,49 @@ public class PanelThongke extends JPanel{
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (buttonGroup.getSelection()==null) {
-					System.out.println("chọn lấy một kiểu kiểm tra đi chứ");
+				if (cbBox.getSelectedItem().equals("Quá Hạn")) {
+					model = SqlCommands.GetTableModel(SqlCommands.Select_tngay_quahan(5), CmdLines.columnNames.PHIEUMUON);
+					table.setModel(model);
+				}
+				else if (buttonGroup.getSelection()==null) {
+					JOptionPane.showMessageDialog(null, "Chọn lấy một kiểu kiểm tra đi chứ", "Message", JOptionPane.ERROR_MESSAGE);
 				}
 				else if (buttonGroup.getSelection().getActionCommand().equals("theongay")) {
-					// 3 trường hợp của cái cbbox xử lý riêng ra
+					try {
+						if(cbBox.getSelectedItem().equals("Sách mượn")) {
+							model = SqlCommands.GetTableModel(SqlCommands.Select_tngay_pm(dpTungay.toString(), dpDen.toString()), CmdLines.columnNames.PHIEUMUON);
+							table.setModel(model);
+						} else {
+							model = SqlCommands.GetTableModel(SqlCommands.Select_tngay_pt(dpTungay.toString(), dpDen.toString()), CmdLines.columnNames.PHIEUMUON);
+							table.setModel(model);
+						}
+					} catch (Exception e2) {
+						JOptionPane.showMessageDialog(null, "Lỗi rồi, chấp nhận", "Message", JOptionPane.ERROR_MESSAGE);
+					}
 				}
 				else {
-					// 3 trường hợp của cái cbbox xử lý riêng ra
+					try {
+						if(cbBox.getSelectedItem().equals("Sách mượn")) {
+							model = SqlCommands.GetTableModel(SqlCommands.Select_tthang_pm(jtThang.getText(), jtNam.getText()), CmdLines.columnNames.PHIEUMUON);
+							table.setModel(model);
+						} else {
+							model = SqlCommands.GetTableModel(SqlCommands.Select_thang_pt(jtThang.getText(), jtNam.getText()), CmdLines.columnNames.PHIEUMUON);
+							table.setModel(model);
+						}
+					} catch (Exception e2) {
+						JOptionPane.showMessageDialog(null, "Lỗi rồi, chấp nhận", "Message", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+		});
+		cbBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if (cbBox.getSelectedItem().equals("Quá Hạn")) {
+					dpTungay.setText("");
+					dpDen.setText("");
+					jtThang.setText("");
+					jtNam.setText("");
 				}
 			}
 		});
@@ -131,5 +169,6 @@ public class PanelThongke extends JPanel{
 	
 	JComboBox<String> cbBox;
 	JTable table;
+	DefaultTableModel model;
 	JScrollPane jstable;
 }

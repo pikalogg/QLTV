@@ -159,7 +159,7 @@ public class FrameSuaDocGia extends JFrame{
 			public void actionPerformed(ActionEvent arg0) {
 				if (mathe!=0) {
 					if(SqlCommands.Updatedg(mathe, jtTen.getText(), jtEmail.getText(), dpNgaySinh.toString(), jtDiachi.getText(), Integer.parseInt(jtTienno.getText().replace(" VND", "")))) {
-						JOptionPane.showMessageDialog(null, "Update thành công", "Message", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Update thành công", "Message", JOptionPane.PLAIN_MESSAGE);
 						mathe = 0;
 					}
 					else JOptionPane.showMessageDialog(null, "Update error", "Message", JOptionPane.ERROR_MESSAGE);

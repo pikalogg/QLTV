@@ -122,6 +122,12 @@ public class PanelQldg extends JPanel{
 				else if (dpNgaySinh.toString()==null||dpNgaySinh.toString().equals("")) {
 					JOptionPane.showMessageDialog(null, "chưa nhập ngày sinh luôn", "Message", JOptionPane.ERROR_MESSAGE);
 				}
+				else if (java.time.LocalDate.now().getYear() - Integer.parseInt(dpNgaySinh.toString().substring(0,4)) < SqlCommands.tuoimin) {
+					JOptionPane.showMessageDialog(null, "Bạn chưa đủ tuổi đăng ký", "Message", JOptionPane.ERROR_MESSAGE);
+				}
+				else if (java.time.LocalDate.now().getYear() - Integer.parseInt(dpNgaySinh.toString().substring(0,4)) > SqlCommands.tuoimax) {
+					JOptionPane.showMessageDialog(null, "Bạn đã quá tuổi đăng ký", "Message", JOptionPane.ERROR_MESSAGE);
+				}
 				else {
 					if(SqlCommands.Insertdg(jtTen.getText(), jtEmail.getText(), dpNgaySinh.toString() , jtDiachi.getText())) {
 						if (jtDiachi.getText().equals("")) {

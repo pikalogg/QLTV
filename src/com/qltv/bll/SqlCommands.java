@@ -15,6 +15,26 @@ import net.proteanit.sql.DbUtils;
 public class SqlCommands {
 	private static Connection con = new MyConnector().Connect("quanlythuvien");
 	private final static String TIMENOW = java.time.LocalDate.now().toString();
+	public static int mucphat = quydinh()[0];
+	public static int tuoimax = quydinh()[1];	
+	public static int tuoimin = quydinh()[2];	
+	public static int songayduocmuon = quydinh()[3];	
+	public static int sosachduocmuon = quydinh()[4];
+	public static int tienphatmotngay = quydinh()[5];
+	private static int[] quydinh() {
+		ResultSet rs = null;
+ 		rs = SelectCommands("SELECT * FROM quydinh");
+		try {
+			if (rs.next()) {
+				int[] a = new int[] {rs.getInt(1),rs.getInt(2),rs.getInt(3),rs.getInt(4),rs.getInt(5),rs.getInt(6)};
+				return a;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new int[] {10,100,0,10,5,10000};
+	}
 	public static int Datediff(int mathe, int masach) {
 		PreparedStatement ps = null;
 		String sql = "SELECT DATEDIFF(CURDATE(), ngaymuon) AS days FROM phieumuon WHERE mathe = ? AND masach = ?";
@@ -179,20 +199,23 @@ public class SqlCommands {
 		}
 		return rs;
 	}
-	public static ResultSet SelectPM_mdg(int mathe, int masach) {
+	public static int SelectPM_mdg(int mathe, int masach) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
-		String mysql = "SELECT mapm FROM phieumuon WHERE mathe = ? AND masach = ?";
+		String mysql = "SELECT mapm FROM phieumuon WHERE trangthai = 0 AND mathe = ? AND masach = ?";
 		try {
 			ps = con.prepareStatement(mysql);
 			
 			ps.setInt(1, mathe);
 			ps.setInt(2, masach);
 			rs = ps.executeQuery();
+			if (rs.next()) {
+				return rs.getInt(1);
+			}
 		} catch (SQLException e) {
 			System.out.println(e.toString());
 		}
-		return rs;
+		return 0;
 	}
 	public static ResultSet SelectSach_ms(int masach) {
 		PreparedStatement ps = null;
@@ -306,13 +329,13 @@ public class SqlCommands {
 		return false;
 	}
 	private static boolean Trasach_pm(int mathe, int masach) {
-		String sqlCommand = "UPDATE phieumuon set trangthai = ? WHERE trangthai = 0 AND mathe = ? AND masach = ?";
+		int mapm = SelectPM_mdg(mathe, masach);
+		
+		String sqlCommand = "UPDATE phieumuon set trangthai = 1 WHERE mapm = ?";
 		PreparedStatement pst = null;
 		try {
 			pst = con.prepareStatement(sqlCommand);
-			pst.setInt(1, 1);
-			pst.setInt(2, mathe);
-			pst.setInt(3, masach);
+			pst.setInt(1, mapm);
 			if (pst.executeUpdate() > 0) {
 				return true;
 			} else {
@@ -403,7 +426,7 @@ public class SqlCommands {
 			pst = con.prepareStatement(sqlCommand);
 			pst.setInt(1, masach);
 			if (pst.executeUpdate() > 0) {
-				return true;
+				return true ;
 			} else {
 				return false;
 			}
@@ -419,6 +442,96 @@ public class SqlCommands {
 		try {
 			ps = con.prepareStatement(mysql);
 			ps.setInt(1, masach);
+			rs = ps.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return rs;
+	}
+	///TimkiemSach
+	public static ResultSet SelectSach_tk(String tensach, String tacgia, String theloai, String nxb) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String mysql = CmdLines.selectTable.SACH + " WHERE tensach LIKE ? AND tacgia LIKE ? AND theloai LIKE ? AND nxb LIKE ?";
+		try {
+			ps = con.prepareStatement(mysql);
+			ps.setString(1, "%"+tensach+"%");
+			ps.setString(2, "%"+tacgia+"%");
+			ps.setString(3, "%"+theloai+"%");
+			ps.setString(4, "%"+nxb+"%");
+			
+			rs = ps.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return rs;
+	}
+	///Thongke
+	public static ResultSet Select_tngay_pm(String tungay, String denngay) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String mysql = CmdLines.selectTable.PHIEUMUON + " WHERE ngaymuon >= ? AND ngaymuon <= ?";
+		try {
+			ps = con.prepareStatement(mysql);
+			ps.setString(1, tungay);
+			ps.setString(2, denngay);
+			
+			rs = ps.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return rs;
+	}
+	public static ResultSet Select_tngay_pt(String tungay, String denngay) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String mysql = CmdLines.selectTable.PHIEUTRA + " WHERE ngaytra >= ? AND ngaytra <= ?";
+		try {
+			ps = con.prepareStatement(mysql);
+			ps.setString(1, tungay);
+			ps.setString(2, denngay);
+			
+			rs = ps.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return rs;
+	}
+	public static ResultSet Select_tngay_quahan(int gioihan) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String mysql = CmdLines.selectTable.PHIEUMUON + " WHERE DATEDIFF(CURDATE(), ngaymuon) <= ?";
+		try {
+			ps = con.prepareStatement(mysql);
+			ps.setInt(1, gioihan);
+			rs = ps.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return rs;
+	}
+	public static ResultSet Select_tthang_pm(String thang, String nam) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String mysql = CmdLines.selectTable.PHIEUMUON + " WHERE ngaymuon LIKE ?";
+		try {
+			ps = con.prepareStatement(mysql);
+			ps.setString(1, nam+"-"+thang+"%");
+			
+			rs = ps.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} 
+		return rs;
+	}
+	public static ResultSet Select_thang_pt(String thang, String nam) {
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		String mysql = CmdLines.selectTable.PHIEUTRA + " WHERE ngaytra LIKE ?";
+		try {
+			ps = con.prepareStatement(mysql);
+			ps.setString(1, nam+"-"+thang+"%");
+			
 			rs = ps.executeQuery();
 		} catch (SQLException e) {
 			e.printStackTrace();

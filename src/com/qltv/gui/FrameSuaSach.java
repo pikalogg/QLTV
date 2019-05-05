@@ -4,17 +4,22 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import com.github.lgooddatepicker.components.DatePicker;
 import com.qltv.bll.CmdLines;
+import com.qltv.bll.MyMatchet;
 import com.qltv.bll.SqlCommands;
 
 @SuppressWarnings("serial")
@@ -114,6 +119,8 @@ public class FrameSuaSach extends JFrame{
 		jlbgr.setBounds(0, 0, 450, 300);
 		getContentPane().add(jlbgr);
 		addListener();
+		
+		masach =0 ;
 	}
 	private void setFone(JLabel jl) {
 		jl.setBorder(null);
@@ -126,16 +133,54 @@ public class FrameSuaSach extends JFrame{
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				
+				ResultSet rs = null;
+				if (MyMatchet.Chet(MyMatchet.Myregex.MASACH, jtMasach.getText())) {
+					rs = SqlCommands.SelectSach_ms(MyMatchet.ConvertMasach(jtMasach.getText()));
+					try {
+						if (rs.next()) {
+							jtTensach.setEditable(true);
+							jtSoluong.setEditable(true);
+							jtTacgia.setEditable(true);
+							jtNxb.setEditable(true);
+							jtTheLoai.setEditable(true);
+							jtDongia.setEditable(true);
+							dpNgxb.setEnabled(true);
+							
+							jtTensach.setText(rs.getString(2));
+							jtSoluong.setText(rs.getString(8));
+							jtTacgia.setText(rs.getString(4));
+							jtNxb.setText(rs.getString(5));
+							jtTheLoai.setText(rs.getString(3));
+							jtDongia.setText(rs.getString(7));
+							int year = Integer.parseInt(rs.getString(6).substring(0, 4));
+							int month = Integer.parseInt(rs.getString(6).substring(5, 7));
+							int day = Integer.parseInt(rs.getString(6).substring(8, 10));
+							dpNgxb.setDate(LocalDate.of(year, month, day));
+							
+							masach = MyMatchet.ConvertMasach(jtMasach.getText());
+						}
+						else {
+							JOptionPane.showMessageDialog(null, "Không tìm thấy đầu sách", "Message", JOptionPane.ERROR_MESSAGE);
+						}
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				} 
+				else JOptionPane.showMessageDialog(null, "Nhập sai mã độc giả", "Message", JOptionPane.ERROR_MESSAGE);
 			}
 		});
 		jbLuu.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				// TODO Auto-generated method stub
-				
+				if (masach!=0) {
+					if(SqlCommands.Updatesach(masach, jtTensach.getText(), jtTheLoai.getText(), jtTacgia.getText(), jtNxb.getText(), dpNgxb.toString(), Integer.parseInt(jtDongia.getText().replace(" VND", "")), Integer.parseInt(jtSoluong.getText()))) {
+						JOptionPane.showMessageDialog(null, "Update thành công", "Message", JOptionPane.PLAIN_MESSAGE);
+						masach = 0;
+					}
+					else JOptionPane.showMessageDialog(null, "Update error", "Message", JOptionPane.ERROR_MESSAGE);
+				}
 			}
 		});
 		jbThoat.addActionListener(new ActionListener() {
@@ -148,7 +193,7 @@ public class FrameSuaSach extends JFrame{
 	}
 	JLabel jlbgr,jlTensach, jlSoluong, jlTacgia, jlNhxb, jlNgxb, jlTheLoai, jlDongia, jlMasach;
 	JTextField jtTensach, jtSoluong, jtTacgia, jtNxb, jtTheLoai, jtDongia, jtMasach;
-	// mui ten nua
+	int masach;
 	JButton jbKiemtra, jbLuu, jbThoat;
 	DatePicker dpNgxb;
 }
