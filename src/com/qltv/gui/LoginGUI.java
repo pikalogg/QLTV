@@ -16,6 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
+import com.qltv.bll.SqlCommands;
+
 public class LoginGUI extends JFrame{
 	private static final long serialVersionUID = 1L;
 
@@ -143,7 +145,7 @@ public class LoginGUI extends JFrame{
 	{
 		String user = jtextUsername.getText();
 		String passw = String.valueOf(jpassPassword.getPassword());
-		if(user.equals("admin")&&passw.equals("admin"))   
+		if(user.equals(SqlCommands.usename)&&passw.equals(SqlCommands.pass))   
 		{
 //			JOptionPane.showMessageDialog(null, "Đăng nhập thành công","", JOptionPane.INFORMATION_MESSAGE);
 			new  HomeGui().setVisible(true);

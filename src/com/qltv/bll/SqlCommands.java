@@ -21,6 +21,9 @@ public class SqlCommands {
 	public static int songayduocmuon = quydinh()[3];	
 	public static int sosachduocmuon = quydinh()[4];
 	public static int tienphatmotngay = quydinh()[5];
+	public static String usename = root()[0];
+	public static String pass = root()[1];
+	/////
 	private static int[] quydinh() {
 		ResultSet rs = null;
  		rs = SelectCommands("SELECT * FROM quydinh");
@@ -35,6 +38,77 @@ public class SqlCommands {
 		}
 		return new int[] {10,100,0,10,5,10000};
 	}
+	
+	private static String[] root() {
+		ResultSet rs = null;
+ 		rs = SelectCommands("SELECT * FROM root");
+		try {
+			if (rs.next()) {
+				String[] a = new String[] {rs.getString(1),rs.getString(2)};
+				return a;
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return new String[] {"",""};
+	}
+	public static boolean Updateroot_un(String usename, String pass) {
+		String sqlCommand = "UPDATE root set pass = ? WHERE usename = ?";
+		PreparedStatement pst = null;
+		try {
+			pst = con.prepareStatement(sqlCommand);
+			pst.setString(1, pass);
+			pst.setString(2, usename);
+			if (pst.executeUpdate() > 0) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (SQLException e) {
+			System.out.println("update error \n" + e.toString());
+		}
+		return false;
+	}
+	public static boolean Updateroot_pa(String usename, String pass) {
+		String sqlCommand = "UPDATE root set usename = ? WHERE pass = ?";
+		PreparedStatement pst = null;
+		try {
+			pst = con.prepareStatement(sqlCommand);
+			pst.setString(1, usename);
+			pst.setString(2, pass);
+			if (pst.executeUpdate() > 0) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (SQLException e) {
+			System.out.println("update error \n" + e.toString());
+		}
+		return false;
+	}
+	public static boolean Updateroot_qd(int mucphat,int tuoimax ,int tuoimin ,int songayduocmuon ,int sosachduocmuon , int tienphatmotngay) {
+		String sqlCommand = "UPDATE quydinh set mucphat = ?, tuoimax = ?,tuoimin = ?,songayduocmuon =?, sosachduocmuon =?, tienphatmotngay = ? ";
+		PreparedStatement pst = null;
+		try {
+			pst = con.prepareStatement(sqlCommand);
+			pst.setInt(1, mucphat);
+			pst.setInt(2, tuoimax);
+			pst.setInt(3, tuoimin);
+			pst.setInt(4, songayduocmuon);
+			pst.setInt(5, sosachduocmuon);
+			pst.setInt(6, tienphatmotngay);
+			if (pst.executeUpdate() > 0) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (SQLException e) {
+			System.out.println("update error \n" + e.toString());
+		}
+		return false;
+	}
+	////
 	public static int Datediff(int mathe, int masach) {
 		PreparedStatement ps = null;
 		String sql = "SELECT DATEDIFF(CURDATE(), ngaymuon) AS days FROM phieumuon WHERE mathe = ? AND masach = ?";

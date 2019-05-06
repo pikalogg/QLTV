@@ -3,11 +3,10 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th5 05, 2019 lúc 05:29 PM
+-- Thời gian đã tạo: Th5 06, 2019 lúc 07:32 AM
 -- Phiên bản máy phục vụ: 10.1.38-MariaDB
 -- Phiên bản PHP: 7.3.4
 
-SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
 START TRANSACTION;
@@ -172,19 +171,19 @@ ALTER TABLE `docgia`
 -- AUTO_INCREMENT cho bảng `phieumuon`
 --
 ALTER TABLE `phieumuon`
-  MODIFY `mapm` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `mapm` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT cho bảng `phieutra`
 --
 ALTER TABLE `phieutra`
-  MODIFY `mapt` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `mapt` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT cho bảng `sach`
 --
 ALTER TABLE `sach`
-  MODIFY `masach` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `masach` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
@@ -203,7 +202,6 @@ ALTER TABLE `phieumuon`
 ALTER TABLE `phieutra`
   ADD CONSTRAINT `fk_pt_masach` FOREIGN KEY (`masach`) REFERENCES `sach` (`masach`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_pt_mathe` FOREIGN KEY (`mathe`) REFERENCES `docgia` (`mathe`) ON DELETE CASCADE;
-SET FOREIGN_KEY_CHECKS=1;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
