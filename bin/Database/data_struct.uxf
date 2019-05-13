@@ -45,7 +45,7 @@ int: tongtienno
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>600</x>
+      <x>570</x>
       <y>240</y>
       <w>170</w>
       <h>130</h>
@@ -102,22 +102,22 @@ int: sosachduocmuon	</panel_attributes>
     <coordinates>
       <x>470</x>
       <y>230</y>
-      <w>150</w>
+      <w>120</w>
       <h>100</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;40.0;10.0;40.0;80.0;130.0;80.0</additional_attributes>
+    <additional_attributes>10.0;10.0;40.0;10.0;40.0;80.0;100.0;80.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
       <x>470</x>
       <y>20</y>
-      <w>150</w>
+      <w>120</w>
       <h>290</h>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
-    <additional_attributes>10.0;10.0;70.0;10.0;70.0;270.0;130.0;270.0</additional_attributes>
+    <additional_attributes>10.0;10.0;70.0;10.0;70.0;270.0;100.0;270.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
@@ -140,5 +140,20 @@ int: sosachduocmuon	</panel_attributes>
     </coordinates>
     <panel_attributes>lt=&lt;&lt;&lt;-</panel_attributes>
     <additional_attributes>120.0;10.0;50.0;10.0;50.0;50.0;10.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>560</x>
+      <y>60</y>
+      <w>170</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>_Root_
+--
+varchar(50) usedname
+varchar(50) pass
+</panel_attributes>
+    <additional_attributes/>
   </element>
 </diagram>

@@ -12,8 +12,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+@SuppressWarnings("serial")
 public class HomeGui extends JFrame{
-	private static final long serialVersionUID = 1L;
 
 	public HomeGui() {
 		setTitle("Home");
@@ -47,12 +47,21 @@ public class HomeGui extends JFrame{
 		jbQlsach = new JButton(new ImageIcon("rec\\img\\home\\tpb3.png"));
 		jbSearch = new JButton(new ImageIcon("rec\\img\\home\\tpb2.png"));
 		jbThongke = new JButton(new ImageIcon("rec\\img\\home\\tpb5.png"));
+		jbsetting = new JButton(new ImageIcon("rec\\img\\home\\setting.png"));
+		
+		getContentPane().add(jbQldg);
+		getContentPane().add(jbQlmt);
+		getContentPane().add(jbSearch);
+		getContentPane().add(jbThongke);
+		getContentPane().add(jbQlsach);
+		getContentPane().add(jbsetting);
 		
 		jbQldg.setBounds(168, 150, 118, 123);
 		jbQlmt.setBounds(318, 150, 118, 123);
 		jbQlsach.setBounds(468, 150, 118, 123);
 		jbSearch.setBounds(618, 150, 118, 123);
 		jbThongke.setBounds(168, 310, 118, 123);
+		jbsetting.setBounds(840, 10, 50, 50);
 		jbQldg.setLayout(null);
 		jbQlmt.setLayout(null);
 		jbSearch.setLayout(null);
@@ -62,14 +71,17 @@ public class HomeGui extends JFrame{
 		jbQlmt.setBorder(null);
 		jbSearch.setBorder(null);
 		jbThongke.setBorder(null);
+		jbsetting.setBorder(null);
 		jbQlsach.setBorder(null);
 		
-		getContentPane().add(jbQldg);
-		getContentPane().add(jbQlmt);
-		getContentPane().add(jbSearch);
-		getContentPane().add(jbThongke);
-		getContentPane().add(jbQlsach);
 						//----~~~~~~~~~----//
+		jbsetting.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				new FrameUpdateUser().setVisible(true);
+			}
+		});
 		jbQldg.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -215,5 +227,5 @@ public class HomeGui extends JFrame{
 		new HomeGui().setVisible(true);
 	}
 	JLabel jlbgr,jlExit,jlBack,jlTitle,jlCN;
-	JButton jbQldg,jbQlmt,jbSearch,jbThongke,jbQlsach;
+	JButton jbQldg,jbQlmt,jbSearch,jbThongke,jbQlsach, jbsetting;
 }

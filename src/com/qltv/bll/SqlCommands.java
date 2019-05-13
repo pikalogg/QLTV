@@ -53,25 +53,8 @@ public class SqlCommands {
 		}
 		return new String[] {"",""};
 	}
-	public static boolean Updateroot_un(String usename, String pass) {
-		String sqlCommand = "UPDATE root set pass = ? WHERE usename = ?";
-		PreparedStatement pst = null;
-		try {
-			pst = con.prepareStatement(sqlCommand);
-			pst.setString(1, pass);
-			pst.setString(2, usename);
-			if (pst.executeUpdate() > 0) {
-				return true;
-			} else {
-				return false;
-			}
-		} catch (SQLException e) {
-			System.out.println("update error \n" + e.toString());
-		}
-		return false;
-	}
 	public static boolean Updateroot_pa(String usename, String pass) {
-		String sqlCommand = "UPDATE root set usename = ? WHERE pass = ?";
+		String sqlCommand = "UPDATE root set usename = ?";
 		PreparedStatement pst = null;
 		try {
 			pst = con.prepareStatement(sqlCommand);

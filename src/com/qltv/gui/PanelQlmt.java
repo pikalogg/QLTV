@@ -314,6 +314,23 @@ public class PanelQlmt extends JTabbedPane{
 				}
 				jtMCselect.setText("");
 				sachmuon = new LinkedList<String>();
+				int mathe = MyMatchet.ConvertMathe(jtMLmdg.getText());
+				Mmodel = SqlCommands.GetTableModel(SqlCommands.SelectPM_mdg(mathe), CmdLines.columnNames.PHIEUMUON);
+				Mtable.setModel(Mmodel);
+				ResultSet rs = SqlCommands.SelectDG_mathe(mathe);
+				try {
+					if (rs.next()) {
+						jtMLtdg.setText(rs.getString(2));
+						jtMLslsdm.setText(rs.getString(8));
+						jtMLtn.setText(rs.getString(7));
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Không tìm thấy độc giả", "Message", JOptionPane.ERROR_MESSAGE);
+					}
+				} catch (SQLException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		}); 
 		jbMchuy.addActionListener(new ActionListener() {
