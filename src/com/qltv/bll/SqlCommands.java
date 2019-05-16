@@ -54,7 +54,7 @@ public class SqlCommands {
 		return new String[] {"",""};
 	}
 	public static boolean Updateroot_pa(String usename, String pass) {
-		String sqlCommand = "UPDATE root set usename = ?";
+		String sqlCommand = "UPDATE root set usename = ? , pass = ?";
 		PreparedStatement pst = null;
 		try {
 			pst = con.prepareStatement(sqlCommand);
